@@ -1,0 +1,261 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@500&family=Open+Sans:wght@300&display=swap');
+
+:root {
+    --header-height: 100px;
+    --settings-width: 400px;
+    --settings-padding: 32px;
+    --settings-total: calc(var(--settings-width) + 2*var(--settings-padding));
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 0;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    background: #333333;
+}
+
+.header {
+    width: calc(100% - var(--settings-total));
+    height: var(--header-height);
+    padding-left: var(--settings-total);
+    line-height: 100px;
+    text-align: center;
+    background: #485650;
+    box-shadow: 0px 0.5px 8px #222222;
+}
+
+#graphboy {
+    vertical-align: middle;
+    padding-left: 10px;
+    height: 90px;
+    filter: invert(1);
+}
+
+.title {
+    display: inline;
+    vertical-align: middle;
+    font-family: 'Comfortaa', cursive;
+    color: #FFFFFF;
+    font-size: 72px;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: calc(100% - var(--header-height));
+}
+
+#settings {
+    display: flex;
+    flex-direction: column;
+    width: var(--settings-width);
+    padding: var(--settings-padding);
+    box-shadow: 0.5px 0px 8px #222222;
+}
+
+#settings .input {
+    padding-bottom: 48px;
+}
+
+label {
+    color: #FFFFFF;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 24px;
+}
+
+input {
+    outline: none;
+}
+
+.textbox {
+    margin-left: 5px;
+    font-size: 24px;
+    width: 42px;
+    text-align: right;
+    padding: 4px;
+    border: 0;
+    border-radius: 4px;
+    box-shadow: inset 0 0 2px #000000;
+}
+
+.textbox::selection {
+    background: #222222;
+    color: #FFFFFF;
+}
+
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: 18px;
+    width: var(--settings-width);
+    height: 8px;
+    background: #696969;
+    border-radius: 4px;
+    box-shadow: 0 0 8px #222222;
+    opacity: 0.8;
+    transition: opacity .2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #448269;
+    border-radius: 12.5px;
+    cursor: pointer;
+}
+
+.checkbox {
+    -webkit-appearance: none;
+    appearance: none;
+    background: #FFFFFF;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    margin-right: 12px;
+    opacity: 1;
+    border: 0;
+    border-radius: 4px;
+    box-shadow: inset 0 0 2px #000000;
+    transition: opacity 0.2s;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.checkbox:hover {
+    opacity: 0.8;
+}
+
+.checkbox:checked {
+    background: #448269;
+}
+
+.checkbox:checked:after {
+    content: '\2714';
+    font-size: 18px;
+    color: #FFFFFF;
+}
+
+.checkbox-label {
+    vertical-align: middle;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.checkbox:checked ~ .checkbox-label {
+    opacity: 1;
+}
+
+.button {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 32px;
+    cursor: pointer;
+    border: 0;
+    border-radius: 6px;
+    box-shadow: inset 0 0 2px #000000;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+}
+
+.button:hover {
+    opacity: 1;
+}
+
+#graph-container {
+    width: calc(100% - var(--settings-total));
+    padding: 20px;
+    background: #FFFFFF;
+    z-index: -1;
+}
+
+#graph {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+footer {
+    display: none;
+}
+
+@media (max-aspect-ratio: 1/1) {
+    .header {
+        width: 100%;
+        padding-left: 0;
+    }
+
+    .content {
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    .content::-webkit-scrollbar {
+        display: none;
+    }
+
+    #settings, #graph-container {
+        width: calc(100% - 40px);
+    }
+
+    #settings .input {
+        padding-left: 20px;
+    }
+
+    #graph-container {
+        max-height: 800px;
+    }
+}
+
+@page {
+    margin: 5mm;
+}
+
+@media print {
+    body {
+        visibility: hidden;
+    }
+
+    #graph {
+        visibility: visible;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        height: 98%;
+        overflow: hidden;
+    }
+
+    footer {
+        visibility: visible;
+        display: block;
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        text-align: center;
+        line-height: 2%;
+        width: 100%;
+    }
+
+    footer .title {
+        font-size: 10px;
+        color: #000000;
+    }
+    
+    footer #graphboy {
+        height: 12px;
+        padding-left: 0;
+        filter: none;
+    }
+}

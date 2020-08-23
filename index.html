@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>graphboy</title>
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <link href="img/graphboy.png" rel="icon" type="image/png" />
+        <script defer src="https://d3js.org/d3.v5.min.js"></script>
+        <script defer src="src/main.js"></script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="title">graphboy</div>
+            <img id="graphboy" src="img/graphboy.png" />
+        </div>
+        <div class="content">
+            <div id="settings">
+                <div class="input">
+                    <label for="numXBox"># of cells along x-axis:</label>
+                    <input type="text" id="numXBox" class="textbox" name="numXBox" value="30"><br>
+                    <input type="range" id="numXSlider" class="slider"/>
+                </div>
+                <div class="input">
+                    <label for="numYBox"># of cells along y-axis:</label>
+                    <input type="text" id="numYBox" class="textbox" name="numYBox" value="40"><br>
+                    <input type="range" id="numYSlider" class="slider"/>
+                </div>
+                <div class="input">
+                    <div>
+                        <input type="checkbox" id="square" class="checkbox" name="square" checked>
+                        <label for="square" class="checkbox-label">Square cells</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="axis" class="checkbox" name="axis" checked>
+                        <label for="axis" class="checkbox-label">Axes</label>
+                    </div>
+                </div>
+                <div>
+                    <input type="button" class="button" onclick="window.print()" value="Print"/>
+                </div>
+            </div>
+            <div id="graph-container">
+            </div>
+        </div>
+        <footer>
+            <div class="title">graphboy</div>
+            <img id="graphboy" src="img/graphboy.png" />
+        </footer>
+    </body>
+</html>
