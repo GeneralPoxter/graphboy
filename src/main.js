@@ -1,4 +1,4 @@
-const WIDTH_RATIO = 3;
+const WIDTH_RATIO = 4;
 const HEIGHT_RATIO = 4;
 const SIZE_FACTOR = 1000;
 const WIDTH = WIDTH_RATIO  * SIZE_FACTOR;
