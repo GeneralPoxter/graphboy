@@ -4,7 +4,7 @@ const POLAR_CIRC_OPTS = { min: 1, max: 12, step: 1 };
 const POLAR_CIRCSUB_OPTS = { min: 0, max: 5, step: 1 };
 const POLAR_ANGLE_OPTS = { min: 0, max: 16, step: 4 };
 const POLAR_ANGLESUB_OPTS = { min: 0, max: 5, step: 1 };
-const MAIN_SIZE_OPTS = { min: 5, max: 15, step: 1 };
+const MAIN_SIZE_OPTS = { min: 10, max: 30, step: 2 };
 const SUB_SIZE_OPTS = { min: 1, max: 10, step: 1 };
 
 // HTML elements
@@ -65,22 +65,24 @@ window.onload = (e) => {
     applyOpts(numAngleSubSlider, POLAR_ANGLESUB_OPTS);
     applyOpts(mainSizeSlider, MAIN_SIZE_OPTS);
     applyOpts(subSizeSlider, SUB_SIZE_OPTS);
-    printRule = document.styleSheets[0].cssRules[37].cssRules[2];
+    //printRule = document.styleSheets[0].cssRules[37].cssRules[2];
     cartesian.click();
     updateGraph();
-    document.body.style.display = "flex";
+    document.body.style.display = 'flex';
 };
 
 window.onbeforeprint = (e) => {
     if (dimensions.value == '1:1') {
-        printRule.style.marginLeft = printRule.style.marginRight = '0.5in';
-        printRule.style.width = 'calc(100% - 1in)';
+        document.getElementById('graph').className.baseVal = 'graph1x1';
+        //printRule.style.marginLeft = printRule.style.marginRight = '0.5in';
+        //printRule.style.width = 'calc(100% - 1in)';
     }
 };
 
 window.onafterprint = (e) => {
-    printRule.style.marginLeft = printRule.style.marginRight = null;
-    printRule.style.width = null;
+    //printRule.style.marginLeft = printRule.style.marginRight = null;
+    //printRule.style.width = null;
+    document.getElementById('graph').className.baseVal = '';
 };
 
 function parseBox(box, last, opts) {
@@ -337,36 +339,34 @@ function renderCartesian(
         .attr('viewBox', `0 0 ${width} ${height}`)
         .attr('preserveAspectRatio', 'xMidYMid meet');
 
-    let strokeBase = subSize / 2;
-
     for (let x = 0; x <= numX; x++) {
-        let stroke = strokeBase;
+        let stroke = subSize / 2;
         if (axis && x == numX / 2) {
-            stroke = mainSize;
+            stroke = mainSize / 2;
         }
         let pos = x * (width - stroke) / numX;
         graph
             .append('rect')
             .attr('x', pos)
-            .attr('y', strokeBase)
-            .attr('height', height - 2 * strokeBase)
+            .attr('y', subSize / 2)
+            .attr('height', height - subSize)
             .attr('width', stroke)
             .attr('fill', color)
             .attr('shape-rendering', 'geometricPrecision');
     }
 
     for (let y = 0; y <= numY; y++) {
-        let stroke = strokeBase;
+        let stroke = subSize / 2;
         if (axis && y == numY / 2) {
-            stroke = mainSize;
+            stroke = mainSize / 2;
         }
         let pos = y * (height - stroke) / numY;
         graph
             .append('rect')
-            .attr('x', strokeBase)
+            .attr('x', subSize / 2)
             .attr('y', pos)
             .attr('height', stroke)
-            .attr('width', width - 2 * strokeBase)
+            .attr('width', width - subSize)
             .attr('fill', color)
             .attr('shape-rendering', 'geometricPrecision');
     }
@@ -393,7 +393,6 @@ function renderPolar(
         .attr('preserveAspectRatio', 'xMidYMid meet')
         .attr('overflow', 'hidden');
 
-    let strokeBase = subSize / 2;
     let r = Math.max(width, height) / 2;
     let cx = width / 2;
     let cy = height / 2;
@@ -403,9 +402,9 @@ function renderPolar(
     let totalAngle = angleFreq * numAngle;
 
     for (let c = 1; c <= totalCirc; c++) {
-        let stroke = strokeBase;
+        let stroke = subSize / 2;
         if (c % circFreq == 0) {
-            stroke = mainSize;
+            stroke = mainSize / 2;
         }
         graph
             .append('circle')
@@ -419,16 +418,16 @@ function renderPolar(
     }
 
     for (let a = 0; a < totalAngle; a++) {
-        let stroke = strokeBase;
+        let stroke = subSize / 2;
         if (a % angleFreq == 0) {
-            stroke = mainSize;
+            stroke = mainSize / 2;
         }
         graph
             .append('line')
             .attr('x1', cx)
             .attr('y1', cy)
-            .attr('x2', cx + (r - mainSize) * Math.cos(a * 2 * Math.PI / totalAngle))
-            .attr('y2', cy + (r - mainSize) * Math.sin(a * 2 * Math.PI / totalAngle))
+            .attr('x2', cx + (r - mainSize / 2) * Math.cos(a * 2 * Math.PI / totalAngle))
+            .attr('y2', cy + (r - mainSize / 2) * Math.sin(a * 2 * Math.PI / totalAngle))
             .attr('stroke', color)
             .attr('stroke-width', stroke)
             .attr('shape-rendering', 'geometricPrecision');

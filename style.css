@@ -98,12 +98,27 @@ body {
     width: var(--settings-width);
     padding: var(--settings-padding);
     box-shadow: 0.5px 0px 8px #222222;
+    overflow-y: auto;
 }
 
 #settings .input {
     padding-bottom: 48px;
     width: 100%;
     box-sizing: border-box;
+}
+
+#settings::-webkit-scrollbar {
+    border-radius: 10px;
+    width: 8px;
+}
+
+#settings::-webkit-scrollbar-thumb {
+    background-color: #696969;
+    border-radius: 10px;
+}
+
+#settings::-webkit-scrollbar-thumb:hover {
+    background-color: #555555;
 }
 
 label {
@@ -237,7 +252,7 @@ input {
 }
 
 #graph-container {
-    width: calc(100% - var(--settings-total));
+    width: calc(100% - var(--settings-total) - 40px);
     padding: 20px;
     background: #FFFFFF;
     z-index: -1;
@@ -259,16 +274,14 @@ input {
         width: 100%;
         box-sizing: border-box;
         padding: 10px;
+        padding-top: 0;
+        padding-bottom: 20px;
     }
 
     .content {
         flex-direction: column;
         overflow-y: auto;
         width: 100%;
-    }
-
-    .content::-webkit-scrollbar {
-        display: none;
     }
 
     #settings, #graph-container {
@@ -305,5 +318,11 @@ input {
         position: fixed;
         top: 0;
         left: 0;
+    }
+
+    .graph1x1 {
+        margin-left: 0.5in;
+        margin-right: 0.5in;
+        width: calc(100% - 1in) !important;
     }
 }
