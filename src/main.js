@@ -36,7 +36,7 @@ let subSizeSlider = document.getElementById('subSize-slider');
 let color = document.getElementById('color');
 let dimensions = document.getElementById('dimensions');
 
-let printRule = document.styleSheets[0].cssRules[37].cssRules[2];
+let printRule;
 
 let mode = 'cartesian';
 let lastChange = 'x';
@@ -65,8 +65,10 @@ window.onload = (e) => {
     applyOpts(numAngleSubSlider, POLAR_ANGLESUB_OPTS);
     applyOpts(mainSizeSlider, MAIN_SIZE_OPTS);
     applyOpts(subSizeSlider, SUB_SIZE_OPTS);
+    printRule = document.styleSheets[0].cssRules[37].cssRules[2];
     cartesian.click();
     updateGraph();
+    document.body.style.display = "flex";
 };
 
 window.onbeforeprint = (e) => {

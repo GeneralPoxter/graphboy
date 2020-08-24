@@ -8,7 +8,7 @@
 }
 
 body {
-    display: flex;
+    display: none;
     flex-direction: column;
     flex-wrap: nowrap;
     margin: 0;
