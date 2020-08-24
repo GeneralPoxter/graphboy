@@ -1,66 +1,42 @@
 // Define constants
-const CARTESIAN_MIN = 2;
-const CARTESIAN_MAX = 120;
-const CARTESIAN_STEP = 2;
-const POLAR_CIRC_MIN = 1;
-const POLAR_CIRC_MAX = 12;
-const POLAR_CIRC_STEP = 1;
-const POLAR_CIRCSUB_MIN = 0;
-const POLAR_CIRCSUB_MAX = 5;
-const POLAR_CIRCSUB_STEP = 1;
-const POLAR_ANGLE_MIN = 0;
-const POLAR_ANGLE_MAX = 16;
-const POLAR_ANGLE_STEP = 4;
-const POLAR_ANGLESUB_MIN = 0;
-const POLAR_ANGLESUB_MAX = 4;
-const POLAR_ANGLESUB_STEP = 1;
-const STROKE_BASE = 2;
-const AXIS_FACTOR = 5;
-const MAJOR_FACTOR = 2.5;
-const SUB_FACTOR = 4;
+const CARTESIAN_OPTS = { min: 2, max: 120, step: 2 };
+const POLAR_CIRC_OPTS = { min: 1, max: 12, step: 1 };
+const POLAR_CIRCSUB_OPTS = { min: 0, max: 5, step: 1 };
+const POLAR_ANGLE_OPTS = { min: 0, max: 16, step: 4 };
+const POLAR_ANGLESUB_OPTS = { min: 0, max: 4, step: 1 };
+const MAIN_SIZE_OPTS = { min: 5, max: 15, step: 1 };
+const SUB_SIZE_OPTS = { min: 1, max: 10, step: 1 };
 
-// Set HTML elements
+// HTML elements
 let cartesian = document.getElementById('cartesian');
 let polar = document.getElementById('polar');
 
 let settingsCartesian = document.getElementById('settings-cartesian');
 let numXBox = document.getElementById('numX-box');
-let numYBox = document.getElementById('numY-box');
 let numXSlider = document.getElementById('numX-slider');
-numXSlider.min = CARTESIAN_MIN;
-numXSlider.max = CARTESIAN_MAX;
-numXSlider.step = CARTESIAN_STEP;
+let numYBox = document.getElementById('numY-box');
 let numYSlider = document.getElementById('numY-slider');
-numYSlider.min = CARTESIAN_MIN;
-numYSlider.max = CARTESIAN_MAX;
-numYSlider.step = CARTESIAN_STEP;
 let squareCheck = document.getElementById('square');
 let axisCheck = document.getElementById('axis');
 
 let settingsPolar = document.getElementById('settings-polar');
 let numCircBox = document.getElementById('numCirc-box');
-let numCircSubBox = document.getElementById('numCircSub-box');
-let numAngleBox = document.getElementById('numAngle-box');
-let numAngleSubBox = document.getElementById('numAngleSub-box');
 let numCircSlider = document.getElementById('numCirc-slider');
-numCircSlider.min = POLAR_CIRC_MIN;
-numCircSlider.max = POLAR_CIRC_MAX;
-numCircSlider.step = POLAR_CIRC_STEP;
+let numCircSubBox = document.getElementById('numCircSub-box');
 let numCircSubSlider = document.getElementById('numCircSub-slider');
-numCircSubSlider.min = POLAR_CIRCSUB_MIN;
-numCircSubSlider.max = POLAR_CIRCSUB_MAX;
-numCircSubSlider.step = POLAR_CIRCSUB_STEP;
+let numAngleBox = document.getElementById('numAngle-box');
 let numAngleSlider = document.getElementById('numAngle-slider');
-numAngleSlider.min = POLAR_ANGLE_MIN;
-numAngleSlider.max = POLAR_ANGLE_MAX;
-numAngleSlider.step = POLAR_ANGLE_STEP;
+let numAngleSubBox = document.getElementById('numAngleSub-box');
 let numAngleSubSlider = document.getElementById('numAngleSub-slider');
-numAngleSubSlider.min = POLAR_ANGLESUB_MIN;
-numAngleSubSlider.max = POLAR_ANGLESUB_MAX;
-numAngleSubSlider.step = POLAR_ANGLESUB_STEP;
 
+let mainSizeBox = document.getElementById('mainSize-box');
+let mainSizeSlider = document.getElementById('mainSize-slider');
+let subSizeBox = document.getElementById('subSize-box');
+let subSizeSlider = document.getElementById('subSize-slider');
 let color = document.getElementById('color');
 let dimensions = document.getElementById('dimensions');
+
+let printRule = document.styleSheets[0].cssRules[37].cssRules[2];
 
 let mode = 'cartesian';
 let lastChange = 'x';
@@ -70,24 +46,50 @@ let lastCirc = numCircBox.value;
 let lastCircSub = numCircSubBox.value;
 let lastAngle = numAngleBox.value;
 let lastAngleSub = numAngleSubBox.value;
+let lastMainSize = mainSizeBox.value;
+let lastSubSize = subSizeBox.value;
 
 // HTML element functionality
+function applyOpts(ele, opts) {
+    ele.min = opts.min;
+    ele.max = opts.max;
+    ele.step = opts.step;
+}
+
 window.onload = (e) => {
+    applyOpts(numXSlider, CARTESIAN_OPTS);
+    applyOpts(numYSlider, CARTESIAN_OPTS);
+    applyOpts(numCircSlider, POLAR_CIRC_OPTS);
+    applyOpts(numCircSubSlider, POLAR_CIRCSUB_OPTS);
+    applyOpts(numAngleSlider, POLAR_ANGLE_OPTS);
+    applyOpts(numAngleSubSlider, POLAR_ANGLESUB_OPTS);
+    applyOpts(mainSizeSlider, MAIN_SIZE_OPTS);
+    applyOpts(subSizeSlider, SUB_SIZE_OPTS);
     cartesian.click();
     updateGraph();
 };
 
 window.onbeforeprint = (e) => {
-    if (dimensions.value == "1:1") {
-        let graph = document.getElementById("graph");
-        graph.style.marginLeft = graph.style.marginRight = "0.5in";
-        graph.style.width = "calc(100% - 1in)";
+    if (dimensions.value == '1:1') {
+        printRule.style.marginLeft = printRule.style.marginRight = '0.5in';
+        printRule.style.width = 'calc(100% - 1in)';
     }
-}
+};
 
 window.onafterprint = (e) => {
-    graph.style.marginLeft = graph.style.marginright = "0";
-    graph.style.width = "100%";
+    printRule.style.marginLeft = printRule.style.marginRight = null;
+    printRule.style.width = null;
+};
+
+function parseBox(box, last, opts) {
+    if (isNaN(box.value)) {
+        box.value = last;
+    } else if (box.value < opts.min) {
+        box.value = opts.min;
+    } else if (box > opts.max) {
+        box.value = opts.max;
+    }
+    box.value = Math.floor(box.value / opts.step) * opts.step;
 }
 
 cartesian.onclick = (e) => {
@@ -96,7 +98,7 @@ cartesian.onclick = (e) => {
     settingsCartesian.style.display = 'block';
     polar.style.opacity = null;
     settingsPolar.style.display = 'none';
-    dimensions.value = "3:4";
+    dimensions.value = '3:4';
     updateGraph();
 };
 
@@ -106,24 +108,13 @@ polar.onclick = (e) => {
     settingsCartesian.style.display = 'none';
     polar.style.opacity = 1;
     settingsPolar.style.display = 'block';
-    dimensions.value = "1:1";
+    dimensions.value = '1:1';
     updateGraph();
 };
 
-function parseBox(box, last, min, max, step) {
-    if (isNaN(box.value)) {
-        box.value = last;
-    } else if (box.value < min) {
-        box.value = min;
-    } else if (box > max) {
-        box.value = max;
-    }
-    box.value = Math.floor(box.value / step) * step;
-}
-
 numXBox.addEventListener('keyup', (e) => {
     if (e.keyCode == 13) {
-        parseBox(numXBox, lastX, CARTESIAN_MIN, CARTESIAN_MAX, CARTESIAN_STEP);
+        parseBox(numXBox, lastX, CARTESIAN_OPTS);
         updateGraph('numX');
     }
 });
@@ -135,7 +126,7 @@ numXSlider.oninput = (e) => {
 
 numYBox.addEventListener('keyup', (e) => {
     if (e.keyCode == 13) {
-        parseBox(numYBox, lastY, CARTESIAN_MIN, CARTESIAN_MAX, CARTESIAN_STEP);
+        parseBox(numYBox, lastY, CARTESIAN_OPTS);
         updateGraph('numY');
     }
 });
@@ -155,13 +146,7 @@ axisCheck.oninput = (e) => {
 
 numCircBox.addEventListener('keyup', (e) => {
     if (e.keyCode == 13) {
-        parseBox(
-            numCircBox,
-            lastCirc,
-            POLAR_CIRC_MIN,
-            POLAR_CIRC_MAX,
-            POLAR_CIRC_STEP
-        );
+        parseBox(numCircBox, lastCirc, POLAR_CIRC_OPTS);
         updateGraph();
     }
 });
@@ -173,31 +158,19 @@ numCircSlider.oninput = (e) => {
 
 numCircSubBox.addEventListener('keyup', (e) => {
     if (e.keyCode == 13) {
-        parseBox(
-            numCircSubBox,
-            lastCircSub,
-            POLAR_CIRCSUB_MIN,
-            POLAR_CIRCSUB_MAX,
-            POLAR_CIRCSUB_STEP
-        );
+        parseBox(numCircSubBox, lastCircSub, POLAR_CIRCSUB_OPTS);
         updateGraph();
     }
-})
+});
 
 numCircSubSlider.oninput = (e) => {
     numCircSubBox.value = numCircSubSlider.value;
     updateGraph();
-}
+};
 
 numAngleBox.addEventListener('keyup', (e) => {
     if (e.keyCode == 13) {
-        parseBox(
-            numAngleBox,
-            lastAngle,
-            POLAR_ANGLE_MIN,
-            POLAR_ANGLE_MAX,
-            POLAR_ANGLE_STEP
-        );
+        parseBox(numAngleBox, lastAngle, POLAR_ANGLE_OPTS);
         updateGraph();
     }
 });
@@ -209,19 +182,35 @@ numAngleSlider.oninput = (e) => {
 
 numAngleSubBox.addEventListener('keyup', (e) => {
     if (e.keyCode == 13) {
-        parseBox(
-            numAngleSubBox,
-            lastAngleSub,
-            POLAR_ANGLESUB_MIN,
-            POLAR_ANGLESUB_MAX,
-            POLAR_ANGLESUB_STEP
-        );
+        parseBox(numAngleSubBox, lastAngleSub, POLAR_ANGLESUB_OPTS);
         updateGraph();
     }
 });
 
 numAngleSubSlider.oninput = (e) => {
     numAngleSubBox.value = numAngleSubSlider.value;
+    updateGraph();
+};
+
+mainSizeBox.addEventListener('keyup', (e) => {
+    if (e.keyCode == 13) {
+        parseBox(mainSizeBox, lastMainSize, MAIN_SIZE_OPTS);
+    }
+});
+
+mainSizeSlider.oninput = (e) => {
+    mainSizeBox.value = mainSizeSlider.value;
+    updateGraph();
+};
+
+subSizeBox.addEventListener('keyup', (e) => {
+    if (e.keyCode == 13) {
+        parseBox(subSizeBox, lastSubSize, SUB_SIZE_OPTS);
+    }
+});
+
+subSizeSlider.oninput = (e) => {
+    subSizeBox.value = subSizeSlider.value;
     updateGraph();
 };
 
@@ -246,6 +235,11 @@ function updateGraph(name) {
         height = 4000;
     }
 
+    let mainSize = mainSizeBox.value;
+    let subSize = subSizeBox.value;
+    mainSizeSlider.value = lastMainSize = mainSize;
+    subSizeSlider.value = lastSubSize = subSize;
+
     if (mode == 'cartesian') {
         if (name == 'numX') {
             lastChange = 'x';
@@ -260,15 +254,19 @@ function updateGraph(name) {
             if (lastChange == 'y') {
                 factor = Math.floor(numYBox.value / heightRatio);
             }
-            factor = Math.floor(factor / CARTESIAN_STEP) * CARTESIAN_STEP;
+            factor =
+                Math.floor(factor / CARTESIAN_OPTS.step) * CARTESIAN_OPTS.step;
             factor = Math.min(
                 factor,
-                Math.floor(CARTESIAN_MAX / Math.max(widthRatio, heightRatio))
+                Math.floor(
+                    CARTESIAN_OPTS.max / Math.max(widthRatio, heightRatio)
+                )
             );
             factor = Math.max(
                 factor,
-                Math.floor(CARTESIAN_MIN / Math.min(widthRatio, heightRatio)) +
-                    CARTESIAN_STEP
+                Math.floor(
+                    CARTESIAN_OPTS.min / Math.min(widthRatio, heightRatio)
+                ) + CARTESIAN_OPTS.step
             );
             numXBox.value = factor * widthRatio;
             numYBox.value = factor * heightRatio;
@@ -276,7 +274,6 @@ function updateGraph(name) {
 
         let numX = numXBox.value;
         let numY = numYBox.value;
-
         numXSlider.value = lastX = numX;
         numYSlider.value = lastY = numY;
 
@@ -285,6 +282,8 @@ function updateGraph(name) {
             numY,
             width,
             height,
+            mainSize,
+            subSize,
             axisCheck.checked,
             color.value
         );
@@ -301,11 +300,30 @@ function updateGraph(name) {
         numAngleSlider.value = lastAngle = numAngle;
         numAngleSubSlider.value = lastAngleSub = numAngleSub;
 
-        renderPolar(numCirc, numCircSub, numAngle, numAngleSub, width, height, color.value);
+        renderPolar(
+            numCirc,
+            numCircSub,
+            numAngle,
+            numAngleSub,
+            width,
+            height,
+            mainSize,
+            subSize,
+            color.value
+        );
     }
 }
 
-function renderCartesian(numX, numY, width, height, axis, color) {
+function renderCartesian(
+    numX,
+    numY,
+    width,
+    height,
+    mainSize,
+    subSize,
+    axis,
+    color
+) {
     d3.select('#graph-container').html('');
 
     let graph = d3
@@ -315,40 +333,52 @@ function renderCartesian(numX, numY, width, height, axis, color) {
         .attr('viewBox', `0 0 ${width} ${height}`)
         .attr('preserveAspectRatio', 'xMidYMid meet');
 
+    let strokeBase = subSize / 2;
+
     for (let x = 0; x <= numX; x++) {
-        let stroke = STROKE_BASE;
+        let stroke = strokeBase;
         if (axis && x == numX / 2) {
-            stroke *= AXIS_FACTOR;
+            stroke = mainSize;
         }
         let pos = x * (width - stroke) / numX;
         graph
             .append('rect')
             .attr('x', pos)
-            .attr('y', STROKE_BASE)
-            .attr('height', height-2*STROKE_BASE)
+            .attr('y', strokeBase)
+            .attr('height', height - 2 * strokeBase)
             .attr('width', stroke)
             .attr('fill', color)
             .attr('shape-rendering', 'geometricPrecision');
     }
 
     for (let y = 0; y <= numY; y++) {
-        let stroke = STROKE_BASE;
+        let stroke = strokeBase;
         if (axis && y == numY / 2) {
-            stroke *= AXIS_FACTOR;
+            stroke = mainSize;
         }
         let pos = y * (height - stroke) / numY;
         graph
             .append('rect')
-            .attr('x', STROKE_BASE)
+            .attr('x', strokeBase)
             .attr('y', pos)
             .attr('height', stroke)
-            .attr('width', width-2*STROKE_BASE)
+            .attr('width', width - 2 * strokeBase)
             .attr('fill', color)
             .attr('shape-rendering', 'geometricPrecision');
     }
 }
 
-function renderPolar(numCirc, numCircSub, numAngle, numAngleSub, width, height, color) {
+function renderPolar(
+    numCirc,
+    numCircSub,
+    numAngle,
+    numAngleSub,
+    width,
+    height,
+    mainSize,
+    subSize,
+    color
+) {
     d3.select('#graph-container').html('');
 
     let graph = d3
@@ -359,7 +389,8 @@ function renderPolar(numCirc, numCircSub, numAngle, numAngleSub, width, height, 
         .attr('preserveAspectRatio', 'xMidYMid meet')
         .attr('overflow', 'hidden');
 
-    let r = Math.max(width, height) / 2 - 2 * STROKE_BASE;
+    let strokeBase = subSize / 2;
+    let r = Math.max(width, height) / 2 - 2 * strokeBase;
     let cx = width / 2;
     let cy = height / 2;
     let circFreq = parseInt(numCircSub) + 1;
@@ -368,15 +399,15 @@ function renderPolar(numCirc, numCircSub, numAngle, numAngleSub, width, height, 
     let totalAngle = angleFreq * numAngle;
 
     for (let c = 1; c <= totalCirc; c++) {
-        let stroke = STROKE_BASE / SUB_FACTOR;
+        let stroke = strokeBase;
         if (c % circFreq == 0) {
-            stroke = STROKE_BASE * MAJOR_FACTOR;
+            stroke = mainSize;
         }
         graph
             .append('circle')
             .attr('cx', cx)
             .attr('cy', cy)
-            .attr('r', r * c / totalCirc)
+            .attr('r', (r - stroke) * c / totalCirc)
             .attr('stroke', color)
             .attr('stroke-width', stroke)
             .attr('fill', 'transparent')
@@ -384,16 +415,16 @@ function renderPolar(numCirc, numCircSub, numAngle, numAngleSub, width, height, 
     }
 
     for (let a = 0; a < totalAngle; a++) {
-        let stroke = STROKE_BASE / SUB_FACTOR;
+        let stroke = strokeBase;
         if (a % angleFreq == 0) {
-            stroke = STROKE_BASE * MAJOR_FACTOR;
+            stroke = mainSize;
         }
         graph
             .append('line')
             .attr('x1', cx)
             .attr('y1', cy)
-            .attr('x2', cx + r * Math.cos(a * 2 * Math.PI / totalAngle))
-            .attr('y2', cy + r * Math.sin(a * 2 * Math.PI / totalAngle))
+            .attr('x2', cx + (r - mainSize) * Math.cos(a * 2 * Math.PI / totalAngle))
+            .attr('y2', cy + (r - mainSize) * Math.sin(a * 2 * Math.PI / totalAngle))
             .attr('stroke', color)
             .attr('stroke-width', stroke)
             .attr('shape-rendering', 'geometricPrecision');

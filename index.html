@@ -65,6 +65,16 @@
                     </div>
                 </div>
                 <div class="input">
+                    <label for="mainSize">Main line thickness:</label>
+                    <input type="text" id="mainSize-box" class="textbox" name="mainSize" value="8" />
+                    <input type="range" id="mainSize-slider" class="slider" />
+                </div>
+                <div class="input">
+                    <label for="subSize">Sub line thickness:</label>
+                    <input type="text" id="subSize-box" class="textbox" name="subSize" value="2" />
+                    <input type="range" id="subSize-slider" class="slider" />
+                </div>
+                <div class="input">
                     <div>
                         <label for="color">Line color:</label>
                         <select name="color" id="color" class="select">
@@ -76,8 +86,8 @@
                     <div>
                         <label for="dimensions">Dimensions:</label>
                         <select name="dimensions" id="dimensions" class="select">
-                            <option value="3:4">8.0" x 10.7" (3:4)</option>
-                            <option value="1:1">8.0" x 8.0" (1:1)</option>
+                            <option value="3:4">8.0" x 10.6" (3:4)</option>
+                            <option value="1:1">7.5" x 7.5" (1:1)</option>
                         </select>
                     </div>
                 </div>
@@ -88,9 +98,5 @@
             <div id="graph-container">
             </div>
         </div>
-        <footer>
-            <div class="title">graphboy</div>
-            <img id="graphboy" src="img/graphboy.png" />
-        </footer>
     </body>
 </html>
