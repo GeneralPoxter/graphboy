@@ -36,8 +36,6 @@ let subSizeSlider = document.getElementById('subSize-slider');
 let color = document.getElementById('color');
 let dimensions = document.getElementById('dimensions');
 
-let printRule;
-
 let mode = 'cartesian';
 let lastChange = 'x';
 let lastX = numXBox.value;
@@ -65,7 +63,6 @@ window.onload = (e) => {
     applyOpts(numAngleSubSlider, POLAR_ANGLESUB_OPTS);
     applyOpts(mainSizeSlider, MAIN_SIZE_OPTS);
     applyOpts(subSizeSlider, SUB_SIZE_OPTS);
-    //printRule = document.styleSheets[0].cssRules[37].cssRules[2];
     cartesian.click();
     updateGraph();
     document.body.style.display = 'flex';
@@ -74,14 +71,10 @@ window.onload = (e) => {
 window.onbeforeprint = (e) => {
     if (dimensions.value == '1:1') {
         document.getElementById('graph').className.baseVal = 'graph1x1';
-        //printRule.style.marginLeft = printRule.style.marginRight = '0.5in';
-        //printRule.style.width = 'calc(100% - 1in)';
     }
 };
 
 window.onafterprint = (e) => {
-    //printRule.style.marginLeft = printRule.style.marginRight = null;
-    //printRule.style.width = null;
     document.getElementById('graph').className.baseVal = '';
 };
 
