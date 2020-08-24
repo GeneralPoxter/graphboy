@@ -9,33 +9,80 @@
     </head>
     <body>
         <div class="header">
-            <div class="title">graphboy</div>
-            <img id="graphboy" src="img/graphboy.png" />
+            <div class="modes">
+                <button id="cartesian">Cartesian</button>
+                <button id="polar">Polar</button>
+            </div>
+            <div class="title-container">
+                <div class="title">graphboy</div>
+                <img id="graphboy" src="img/graphboy.png" />
+            </div>
         </div>
         <div class="content">
             <div id="settings">
-                <div class="input">
-                    <label for="numXBox"># of cells along x-axis:</label>
-                    <input type="text" id="numXBox" class="textbox" name="numXBox" value="30"><br>
-                    <input type="range" id="numXSlider" class="slider"/>
+                <div id="settings-cartesian">
+                    <div class="input">
+                        <label for="numX"># of cells along x-axis:</label>
+                        <input type="text" id="numX-box" class="textbox" name="numX" value="30" /><br>
+                        <input type="range" id="numX-slider" class="slider" />
+                    </div>
+                    <div class="input">
+                        <label for="numY"># of cells along y-axis:</label>
+                        <input type="text" id="numY-box" class="textbox" name="numY" value="40" /><br>
+                        <input type="range" id="numY-slider" class="slider" />
+                    </div>
+                    <div class="input">
+                        <div>
+                            <input type="checkbox" id="square" class="checkbox" name="square" checked />
+                            <label for="square" class="checkbox-label">Square cells</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="axis" class="checkbox" name="axis" checked />
+                            <label for="axis" class="checkbox-label">Axes</label>
+                        </div>
+                    </div>
                 </div>
-                <div class="input">
-                    <label for="numYBox"># of cells along y-axis:</label>
-                    <input type="text" id="numYBox" class="textbox" name="numYBox" value="40"><br>
-                    <input type="range" id="numYSlider" class="slider"/>
+                <div id="settings-polar">
+                    <div class="input">
+                        <label for="numCirc"># of circles:</label>
+                        <input type="text" id="numCirc-box" class="textbox" name="numCirc" value="3" /><br>
+                        <input type="range" id="numCirc-slider" class="slider" />
+                    </div>
+                    <div class="input">
+                        <label for="numCircSub"># of sub-circles:</label>
+                        <input type="text" id="numCircSub-box" class="textbox" name="numCircSub" value="1" /><br>
+                        <input type="range" id="numCircSub-slider" class="slider" />
+                    </div>
+                    <div class="input">
+                        <label for="numAngle"># of angles:</label>
+                        <input type="text" id="numAngle-box" class="textbox" name="numAngle" value="4" /><br>
+                        <input type="range" id="numAngle-slider" class="slider" />
+                    </div>
+                    <div class="input">
+                        <label for="numAngleSub"># of sub-angles:</label>
+                        <input type="text" id="numAngleSub-box" class="textbox" name="numAngleSub" value="2" /><br>
+                        <input type="range" id="numAngleSub-slider" class="slider" />
+                    </div>
                 </div>
                 <div class="input">
                     <div>
-                        <input type="checkbox" id="square" class="checkbox" name="square" checked>
-                        <label for="square" class="checkbox-label">Square cells</label>
+                        <label for="color">Line color:</label>
+                        <select name="color" id="color" class="select">
+                            <option value="black">Black</option>
+                            <option value="blue">Blue</option>
+                            <option value="red">Red</option>
+                        </select>
                     </div>
                     <div>
-                        <input type="checkbox" id="axis" class="checkbox" name="axis" checked>
-                        <label for="axis" class="checkbox-label">Axes</label>
+                        <label for="dimensions">Dimensions:</label>
+                        <select name="dimensions" id="dimensions" class="select">
+                            <option value="3:4">8.0" x 10.7" (3:4)</option>
+                            <option value="1:1">8.0" x 8.0" (1:1)</option>
+                        </select>
                     </div>
                 </div>
                 <div>
-                    <input type="button" class="button" onclick="window.print()" value="Print"/>
+                    <input type="button" class="button" onclick="window.print()" value="Print / Save PDF"/>
                 </div>
             </div>
             <div id="graph-container">
