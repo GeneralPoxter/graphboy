@@ -15,7 +15,7 @@ const POLAR_ANGLESUB_MIN = 0;
 const POLAR_ANGLESUB_MAX = 4;
 const POLAR_ANGLESUB_STEP = 1;
 const STROKE_BASE = 2;
-const AXIS_FACTOR = 4;
+const AXIS_FACTOR = 5;
 const MAJOR_FACTOR = 2.5;
 const SUB_FACTOR = 4;
 
