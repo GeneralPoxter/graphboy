@@ -3,7 +3,7 @@ const CARTESIAN_OPTS = { min: 2, max: 120, step: 2 };
 const POLAR_CIRC_OPTS = { min: 1, max: 12, step: 1 };
 const POLAR_CIRCSUB_OPTS = { min: 0, max: 5, step: 1 };
 const POLAR_ANGLE_OPTS = { min: 0, max: 16, step: 4 };
-const POLAR_ANGLESUB_OPTS = { min: 0, max: 4, step: 1 };
+const POLAR_ANGLESUB_OPTS = { min: 0, max: 5, step: 1 };
 const MAIN_SIZE_OPTS = { min: 5, max: 15, step: 1 };
 const SUB_SIZE_OPTS = { min: 1, max: 10, step: 1 };
 
@@ -88,7 +88,7 @@ function parseBox(box, last, opts) {
         box.value = last;
     } else if (box.value < opts.min) {
         box.value = opts.min;
-    } else if (box > opts.max) {
+    } else if (box.value > opts.max) {
         box.value = opts.max;
     }
     box.value = Math.floor(box.value / opts.step) * opts.step;
@@ -197,6 +197,7 @@ numAngleSubSlider.oninput = (e) => {
 mainSizeBox.addEventListener('keyup', (e) => {
     if (e.keyCode == 13) {
         parseBox(mainSizeBox, lastMainSize, MAIN_SIZE_OPTS);
+        updateGraph();
     }
 });
 
@@ -208,6 +209,7 @@ mainSizeSlider.oninput = (e) => {
 subSizeBox.addEventListener('keyup', (e) => {
     if (e.keyCode == 13) {
         parseBox(subSizeBox, lastSubSize, SUB_SIZE_OPTS);
+        updateGraph();
     }
 });
 
@@ -392,7 +394,7 @@ function renderPolar(
         .attr('overflow', 'hidden');
 
     let strokeBase = subSize / 2;
-    let r = Math.max(width, height) / 2 - 2 * strokeBase;
+    let r = Math.max(width, height) / 2;
     let cx = width / 2;
     let cy = height / 2;
     let circFreq = parseInt(numCircSub) + 1;
@@ -409,7 +411,7 @@ function renderPolar(
             .append('circle')
             .attr('cx', cx)
             .attr('cy', cy)
-            .attr('r', (r - stroke) * c / totalCirc)
+            .attr('r', (r - stroke / 2) * c / totalCirc)
             .attr('stroke', color)
             .attr('stroke-width', stroke)
             .attr('fill', 'transparent')
