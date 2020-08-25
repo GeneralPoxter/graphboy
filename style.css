@@ -233,6 +233,10 @@ input {
     opacity: 0.9;
 }
 
+.button-container {
+    padding-bottom: 20px;
+}
+
 .button {
     -webkit-appearance: none;
     appearance: none;

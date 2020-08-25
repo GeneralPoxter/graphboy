@@ -36,6 +36,9 @@ let subSizeSlider = document.getElementById('subSize-slider');
 let color = document.getElementById('color');
 let dimensions = document.getElementById('dimensions');
 
+let printButton = document.getElementById('print-button');
+let svgButton = document.getElementById('svg-button');
+
 let mode = 'cartesian';
 let lastChange = 'x';
 let lastX = numXBox.value;
@@ -66,16 +69,6 @@ window.onload = (e) => {
     cartesian.click();
     updateGraph();
     document.body.style.display = 'flex';
-};
-
-window.onbeforeprint = (e) => {
-    if (dimensions.value == '1:1') {
-        document.getElementById('graph').className.baseVal = 'graph1x1';
-    }
-};
-
-window.onafterprint = (e) => {
-    document.getElementById('graph').className.baseVal = '';
 };
 
 function parseBox(box, last, opts) {
@@ -219,6 +212,28 @@ color.oninput = (e) => {
 
 dimensions.oninput = (e) => {
     updateGraph();
+};
+
+printButton.onclick = (e) => {
+    window.print();
+};
+
+window.onbeforeprint = (e) => {
+    if (dimensions.value == '1:1') {
+        document.getElementById('graph').className.baseVal = 'graph1x1';
+    }
+};
+
+window.onafterprint = (e) => {
+    document.getElementById('graph').className.baseVal = '';
+};
+
+svgButton.onclick = (e) => {
+    let svg = document.getElementById('graph-container').innerHTML;
+    let blob = new Blob([ svg.toString() ]);
+    svgButton.href = window.webkitURL.createObjectURL(blob);
+    svgButton.download = 'graphboy.svg';
+    svgButton.click();
 };
 
 // Graph generation
