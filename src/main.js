@@ -286,9 +286,7 @@ function updateGraph(name) {
             );
             factor = Math.max(
                 factor,
-                Math.floor(
-                    CARTESIAN_OPTS.min / Math.min(widthRatio, heightRatio)
-                ) + CARTESIAN_OPTS.step
+                CARTESIAN_OPTS.min
             );
             numXBox.value = factor * widthRatio;
             numYBox.value = factor * heightRatio;
