@@ -264,7 +264,7 @@ input {
     display: block;
 }
 
-@media (max-aspect-ratio: 1/1) {
+@media screen and (max-aspect-ratio: 1/1), screen and (max-width: 950px) {
     .header {
         flex-direction: column-reverse;
         height: auto;
@@ -273,9 +273,13 @@ input {
     .title-container, .modes {
         width: 100%;
         box-sizing: border-box;
-        padding: 10px;
+        padding-bottom: 16px;
+    }
+
+    .modes {
+        padding: 10%;
         padding-top: 0;
-        padding-bottom: 20px;
+        padding-bottom: 32px;
     }
 
     .content {
@@ -284,9 +288,19 @@ input {
         width: 100%;
     }
 
+    .content::-webkit-scrollbar {
+        display: none;
+    }
+
     #settings, #graph-container {
         width: 100%;
+        padding-left: 10%;
+        padding-right: 10%;
         box-sizing: border-box;
+    }
+
+    #settings {
+        min-height: 200px;
     }
 
     #settings .input {
