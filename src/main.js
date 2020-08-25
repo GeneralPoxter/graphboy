@@ -228,12 +228,20 @@ window.onafterprint = (e) => {
     document.getElementById('graph').className.baseVal = '';
 };
 
+// Code based on https://stackoverflow.com/a/23218877 by defghi1977
 svgButton.onclick = (e) => {
-    let svg = document.getElementById('graph-container').innerHTML;
-    let blob = new Blob([ svg.toString() ]);
-    svgButton.href = window.webkitURL.createObjectURL(blob);
-    svgButton.download = 'graphboy.svg';
-    svgButton.click();
+    let svg = document.getElementById('graph');
+    svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+
+    let serializer = new XMLSerializer();
+    let source = '<?xml version="1.0" standalone="no"?>\r\n' + serializer.serializeToString(svg);
+    let url = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
+
+    let ele = document.createElement("a");
+    ele.href = url
+    ele.download = 'graphboy.svg';
+    ele.click();
+    ele.remove();
 };
 
 // Graph generation
